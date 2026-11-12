@@ -11,12 +11,42 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos da pasta public
+// Servir arquivos estáticos da pasta public (incluindo imagens e vídeos)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota raiz redirecionando para a landing page com sufixo .fazenda
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'landing.fazenda.html'));
+});
+
+// ==========================================
+// ROTAS DA API - GESTÃO DE ANIMAIS (FAZENDA SABIÁ)
+// ==========================================
+
+// 1. Rota para listar todos os animais (usada na vitrine de vendas e plantéis)
+app.get('/api/animais', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM animais ORDER BY id DESC');
+        res.json(rows);
+    } catch (erro) {
+        console.error('Erro ao buscar animais:', erro);
+        res.status(500).json({ erro: 'Erro interno ao carregar os animais.' });
+    }
+});
+
+// 2. Rota para buscar os detalhes de um animal específico por ID (usada em detalhe.fazenda.html)
+app.get('/api/animais/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const [rows] = await db.query('SELECT * FROM animais WHERE id = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ erro: 'Animal não encontrado.' });
+        }
+        res.json(rows[0]);
+    } catch (erro) {
+        console.error('Erro ao buscar animal por ID:', erro);
+        res.status(500).json({ erro: 'Erro interno ao buscar o animal.' });
+    }
 });
 
 // Inicialização do Servidor

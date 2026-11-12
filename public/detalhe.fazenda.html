@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Animal - Fazenda Sabiá</title>
+    <link rel="stylesheet" href="css/estilo.fazenda.css">
+    <style>
+        .detalhe-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 5%;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+        }
+        .galeria-box {
+            background: var(--azul-escuro);
+            border-radius: 8px;
+            padding: 10px;
+            border: 2px solid var(--dourado);
+        }
+        .foto-principal-wrapper {
+            width: 100%;
+            height: 360px;
+            overflow: hidden;
+            border-radius: 6px;
+            background-color: #000;
+        }
+        #foto-principal {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 20%;
+            display: block;
+        }
+        .miniaturas-carrossel {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+        .miniaturas-carrossel img {
+            width: 75px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            opacity: 0.6;
+            transition: 0.2s;
+            background: #000;
+        }
+        .miniaturas-carrossel img.ativa {
+            border-color: var(--dourado);
+            opacity: 1;
+        }
+        .video-apresentacao {
+            margin-top: 25px;
+        }
+        .video-apresentacao h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        .video-apresentacao video {
+            width: 100%;
+            max-height: 200px;
+            border-radius: 6px;
+            border: 1px solid var(--dourado);
+            background: #000;
+            display: block;
+        }
+        .info-detalhe h1 {
+            color: var(--azul-escuro);
+            margin-bottom: 15px;
+            font-size: 2.2rem;
+        }
+        .info-detalhe p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        .info-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--dourado);
+        }
+        @media (max-width: 768px) {
+            .detalhe-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- O cabeçalho será injetado via componentes.fazenda.js -->
+    <div id="header-container"></div>
+
+    <main class="detalhe-container">
+        <!-- Coluna Esquerda: Galeria de Fotos e Vídeo -->
+        <div>
+            <div class="galeria-box">
+                <div class="foto-principal-wrapper">
+                    <img id="foto-principal" src="img/1.png" alt="Foto do Animal">
+                </div>
+                <div class="miniaturas-carrossel" id="lista-miniaturas">
+                    <!-- Miniaturas injetadas dinamicamente via JS -->
+                </div>
+            </div>
+
+            <div class="video-apresentacao" id="bloco-video">
+                <h3>Vídeo de Apresentação (Até 1 min)</h3>
+                <video id="video-animal" controls preload="metadata">
+                    <source src="" type="video/mp4">
+                    Seu navegador não suporta vídeos.
+                </video>
+            </div>
+        </div>
+
+        <!-- Coluna Direita: Informações e Botão WhatsApp -->
+        <div class="info-detalhe">
+            <span class="badge-premio" id="detalhe-categoria">Categoria</span>
+            <h1 id="detalhe-nome">Carregando...</h1>
+            
+            <div class="info-box">
+                <p><strong>Tatuagem / Registro:</strong> <span id="detalhe-tatuagem">---</span></p>
+                <p><strong>Nascimento:</strong> <span id="detalhe-nascimento">---</span></p>
+                <p><strong>Genealogia:</strong><br>
+                   • Pai: <span id="detalhe-pai">---</span><br>
+                   • Mãe: <span id="detalhe-mae">---</span>
+                </p>
+                <p><strong>Observações / Descrição:</strong><br><span id="detalhe-descricao">---</span></p>
+            </div>
+
+            <div style="margin-top: 25px;">
+                <a id="btn-whatsapp" href="#" target="_blank" class="btn-dourado" style="display: block; text-align: center; padding: 15px; font-size: 1.1rem;">
+                    💬 Tenho Interesse / Consultar via WhatsApp
+                </a>
+                <div style="text-align: center; margin-top: 15px;">
+                    <a href="animais.venda.fazenda.html" style="color: var(--azul-escuro); text-decoration: none; font-weight: 500;">← Voltar para a Vitrine de Vendas</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- O rodapé será injetado via componentes.fazenda.js -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts do Sistema -->
+    <script src="js/componentes.fazenda.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const animalId = urlParams.get('id');
+
+        async function carregarDetalhesAnimal() {
+            if (!animalId) {
+                alert('Nenhum animal selecionado.');
+                window.location.href = 'animais.venda.fazenda.html';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/animais/${animalId}`);
+                if (!response.ok) {
+                    throw new Error('Animal não encontrado');
+                }
+                const animal = await response.json();
+
+                // Preencher textos
+                document.getElementById('detalhe-nome').innerText = animal.nome || 'Animal sem nome';
+                document.getElementById('detalhe-categoria').innerText = animal.categoria || 'Reprodutor / Matriz';
+                document.getElementById('detalhe-tatuagem').innerText = animal.tatuagem || '---';
+                document.getElementById('detalhe-nascimento').innerText = animal.nascimento ? new Date(animal.nascimento).toLocaleDateString('pt-BR') : 'Não informado';
+                document.getElementById('detalhe-pai').innerText = animal.pai || 'Não registrado';
+                document.getElementById('detalhe-mae').innerText = animal.mae || 'Não registrado';
+                document.getElementById('detalhe-descricao').innerText = animal.descricao || 'Sem observações adicionais.';
+
+                // Configurar WhatsApp dinâmico
+                const mensagemWp = encodeURIComponent(`Olá, tenho interesse em adquirir o animal ${animal.nome} (Tatuagem: ${animal.tatuagem || 'N/A'}). Poderia me passar mais informações?`);
+                document.getElementById('btn-whatsapp').href = `https://wa.me/5553999102289?text=${mensagemWp}`;
+
+                // Configurar Fotos (até 5 fotos)
+                const fotos = [animal.foto_1, animal.foto_2, animal.foto_3, animal.foto_4, animal.foto_5].filter(f => f && f.trim() !== '');
+                const imgPrincipal = document.getElementById('foto-principal');
+                const listaMiniaturas = document.getElementById('lista-miniaturas');
+
+                if (fotos.length > 0) {
+                    imgPrincipal.src = fotos[0];
+                } else {
+                    imgPrincipal.src = 'img/1.png';
+                    fotos.push('img/1.png');
+                }
+
+                listaMiniaturas.innerHTML = '';
+                fotos.forEach((foto, index) => {
+                    const thumb = document.createElement('img');
+                    thumb.src = foto;
+                    if (index === 0) thumb.classList.add('ativa');
+                    thumb.onclick = () => {
+                        imgPrincipal.src = foto;
+                        document.querySelectorAll('.miniaturas-carrossel img').forEach(t => t.classList.remove('ativa'));
+                        thumb.classList.add('ativa');
+                    };
+                    listaMiniaturas.appendChild(thumb);
+                });
+
+                // Configurar Vídeo
+                const blocoVideo = document.getElementById('bloco-video');
+                const videoElement = document.getElementById('video-animal');
+                if (animal.video_url && animal.video_url.trim() !== '') {
+                    videoElement.querySelector('source').src = animal.video_url;
+                    videoElement.load();
+                    blocoVideo.style.display = 'block';
+                } else {
+                    blocoVideo.style.display = 'none';
+                }
+
+            } catch (erro) {
+                console.error('Erro ao carregar detalhes:', erro);
+                alert('Erro ao carregar as informações do animal.');
+                window.location.href = 'animais.venda.fazenda.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', carregarDetalhesAnimal);
+    </script>
+</body>
+</html>

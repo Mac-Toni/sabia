@@ -11,10 +11,9 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- Inserir usuário administrador padrão (senha temporária: admin123)
--- (O hash bcrypt para 'admin123' pode ser gerado no servidor)
 INSERT INTO usuarios (email, senha) VALUES ('admin@fazendasabia.com.br', '$2b$10$ExemploHashSenhaAdminPlaceholder');
 
--- Tabela de Animais (Plantel e Comercialização)
+-- Tabela de Animais (Plantel e Comercialização com suporte a até 5 fotos e vídeo)
 CREATE TABLE IF NOT EXISTS animais (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
@@ -26,6 +25,12 @@ CREATE TABLE IF NOT EXISTS animais (
     pai VARCHAR(100),
     mae VARCHAR(100),
     descricao TEXT,
-    foto VARCHAR(255),
+    foto_1 VARCHAR(255),
+    foto_2 VARCHAR(255),
+    foto_3 VARCHAR(255),
+    foto_4 VARCHAR(255),
+    foto_5 VARCHAR(255),
+    video_url VARCHAR(255),
     criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+```[cite: 8]
