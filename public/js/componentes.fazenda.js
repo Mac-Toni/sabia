@@ -20,14 +20,21 @@ document.addEventListener("DOMContentLoaded", function() {
     </nav>
     `;
 
-    // Inserir Rodapé Padronizado
+    // Inserir Rodapé Padronizado com Redes Sociais
     const footerHTML = `
     <footer>
-        <p>&copy; 2026 Fazenda Sabiá - Aceguá / RS. Desenvolvido por Voxy Tec | Pixel Forge.</p>
+        <p>&copy; 2026 Fazenda Sabiá - Aceguá / RS. Todos os direitos reservados.</p>
+        <p style="margin-top: 8px; font-size: 0.9rem;">
+            Acompanhe a criação: 
+            <a href="https://www.facebook.com/people/Sabi%C3%A1-Poll-Dorset/100070547169421/" target="_blank" style="color: var(--dourado); text-decoration: none; margin: 0 10px;">Facebook</a> | 
+            <a href="https://www.instagram.com/sabiapolldorset/" target="_blank" style="color: var(--dourado); text-decoration: none; margin: 0 10px;">Instagram</a> | 
+            <a href="https://wa.me/5553999102289" target="_blank" style="color: var(--dourado); text-decoration: none; margin: 0 10px;">WhatsApp (53) 99910-2289</a>
+        </p>
+        <p style="margin-top: 8px; font-size: 0.8rem; color: #aaa;">Desenvolvido por Voxy Tec | Pixel Forge.</p>
     </footer>
     `;
 
-    // Injeta no início e no fim do body se os elementos placeholders existirem ou cria automaticamente
+    // Injeta no início e no fim do body
     document.body.insertAdjacentHTML('afterbegin', headerHTML);
     document.body.insertAdjacentHTML('beforeend', footerHTML);
 });

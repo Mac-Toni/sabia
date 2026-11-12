@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animais à Venda - Fazenda Sabiá</title>
+    <link rel="stylesheet" href="css/estilo.fazenda.css">
+    <style>
+        .cabecalho-pagina {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            padding: 50px 5%;
+            text-align: center;
+            border-bottom: 3px solid var(--dourado);
+        }
+        .cabecalho-pagina h1 {
+            color: var(--dourado);
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+        }
+        .filtros-venda {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 35px auto 10px;
+            flex-wrap: wrap;
+        }
+        .btn-filtro {
+            background-color: var(--branco);
+            color: var(--azul-escuro);
+            border: 1px solid var(--azul-escuro);
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-filtro:hover, .btn-filtro.ativo {
+            background-color: var(--azul-escuro);
+            color: var(--dourado);
+            border-color: var(--dourado);
+        }
+        .container-venda {
+            padding: 30px 5% 70px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .info-tecnica {
+            margin: 12px 0;
+            font-size: 0.9rem;
+            color: #444;
+            line-height: 1.5;
+        }
+        .btn-whatsapp {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: #1f7a4c;
+            color: var(--branco);
+            padding: 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        .btn-whatsapp:hover {
+            background-color: #165937;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="cabecalho-pagina">
+        <h1>Genética Disponível para Venda</h1>
+        <p>Invista em reprodutores, matrizes e embriões Poll Dorset com rigor técnico e registro ARCO.</p>
+    </header>
+
+    <div class="filtros-venda">
+        <button class="btn-filtro ativo" onclick="filtrarAnimais('todos', this)">Todos os Lotes</button>
+        <button class="btn-filtro" onclick="filtrarAnimais('reprodutor', this)">Reprodutores (SO)</button>
+        <button class="btn-filtro" onclick="filtrarAnimais('matriz', this)">Matrizes</button>
+        <button class="btn-filtro" onclick="filtrarAnimais('embriao', this)">Pacotes de Embriões</button>
+    </div>
+
+    <main class="container-venda">
+        <div class="grid-animais">
+
+            <!-- Lote 1 -->
+            <div class="card-animal item-venda" data-categoria="reprodutor">
+                <img src="img/card.animais.venda.jpg" alt="Reprodutor Poll Dorset Tatuagem 83">
+                <div class="card-body">
+                    <span class="badge-premio">Reprodutor PO • Registro ARCO</span>
+                    <h3>Carneiro Sabiá 0083</h3>
+                    <div class="info-tecnica">
+                        <strong>Nascimento:</strong> Agosto/2025<br>
+                        <strong>Pai:</strong> NZ Importado Gold 402<br>
+                        <strong>Mãe:</strong> Sabiá Princesa 0021
+                    </div>
+                    <p>Excelente opção para cobertura a campo ou inseminação. Exame andrológico positivo.</p>
+                    <a href="contato.fazenda.html?interesse=Carneiro_Sabia_0083" class="btn-whatsapp">Consultar Condições</a>
+                </div>
+            </div>
+
+            <!-- Lote 2 -->
+            <div class="card-animal item-venda" data-categoria="matriz">
+                <img src="img/card.animais.venda.jpg" alt="Matriz Poll Dorset">
+                <div class="card-body">
+                    <span class="badge-premio">Matriz PO • Prenhez Confirmada</span>
+                    <h3>Borrega Sabiá 0152</h3>
+                    <div class="info-tecnica">
+                        <strong>Nascimento:</strong> Julho/2025<br>
+                        <strong>Pai:</strong> Sabiá Titã 0054<br>
+                        <strong>Mãe:</strong> Sabiá Aurora 0040
+                    </div>
+                    <p>Fêmea de linhagem neozelandesa com prenhez confirmada do Grande Campeão Sabiá 0131.</p>
+                    <a href="contato.fazenda.html?interesse=Borrega_Sabia_0152" class="btn-whatsapp">Consultar Condições</a>
+                </div>
+            </div>
+
+            <!-- Lote 3 -->
+            <div class="card-animal item-venda" data-categoria="embriao">
+                <img src="img/card.animais.venda.jpg" alt="Pacote de Embriões Fazenda Sabiá">
+                <div class="card-body">
+                    <span class="badge-premio">Genética Congelada</span>
+                    <h3>Lote de Embriões Elite (5 unidades)</h3>
+                    <div class="info-tecnica">
+                        <strong>Acasalamento:</strong> NZ Gold 402 x Sabiá 0118<br>
+                        <strong>Grau de Sangue:</strong> Puro de Origem (PO)<br>
+                        <strong>Procedência:</strong> Aceguá / RS
+                    </div>
+                    <p>Acasalamento dirigido pela equipe veterinária para máxima produtividade de carne e precocidade.</p>
+                    <a href="contato.fazenda.html?interesse=Lote_Embrioes_Elite" class="btn-whatsapp">Consultar Condições</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/componentes.fazenda.js"></script>
+    <script>
+        function filtrarAnimais(categoria, botao) {
+            // Atualiza botão ativo
+            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('ativo'));
+            botao.classList.add('ativo');
+
+            // Filtra os cards
+            const cards = document.querySelectorAll('.item-venda');
+            cards.forEach(card => {
+                if (categoria === 'todos' || card.getAttribute('data-categoria') === categoria) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

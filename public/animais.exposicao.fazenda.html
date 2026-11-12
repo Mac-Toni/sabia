@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantel de Exposição - Fazenda Sabiá</title>
+    <link rel="stylesheet" href="css/estilo.fazenda.css">
+    <style>
+        .cabecalho-pagina {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            padding: 50px 5%;
+            text-align: center;
+            border-bottom: 3px solid var(--dourado);
+        }
+        .cabecalho-pagina h1 {
+            color: var(--dourado);
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+        }
+        .container-plantel {
+            padding: 60px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .genealogia-box {
+            background-color: var(--fundo-claro);
+            border-left: 3px solid var(--dourado);
+            padding: 10px 12px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            border-radius: 0 4px 4px 0;
+        }
+        .genealogia-box strong {
+            color: var(--azul-escuro);
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .genealogia-linha {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px dashed #ccc;
+            padding: 3px 0;
+        }
+        .genealogia-linha:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="cabecalho-pagina">
+        <h1>Plantel de Exposição</h1>
+        <p>Genética comprovada nas principais pistas de julgamento da raça Poll Dorset.</p>
+    </header>
+
+    <main class="container-plantel">
+        <div class="grid-animais" id="lista-exposicao">
+            
+            <!-- Animal 1 -->
+            <div class="card-animal">
+                <img src="img/premiado.fazenda2.jpg" alt="Grande Campeão Pista 03">
+                <div class="card-body">
+                    <span class="badge-premio">Grande Campeão • Pista 03</span>
+                    <h3>Sabiá Elite 0131 (Tatuagem 0131)</h3>
+                    <p>Reprodutor de destaque com excelente conformação frigorífica, aprumos corretos e precocidade.</p>
+                    
+                    <div class="genealogia-box">
+                        <strong>Árvore Genealógica</strong>
+                        <div class="genealogia-linha">
+                            <span>Pai:</span>
+                            <span><b>NZ Importado Gold 402</b></span>
+                        </div>
+                        <div class="genealogia-linha">
+                            <span>Mãe:</span>
+                            <span><b>Sabiá Suprema 0089</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animal 2 -->
+            <div class="card-animal">
+                <img src="img/premiado.fazenda1.jpg" alt="Reservado Campeão">
+                <div class="card-body">
+                    <span class="badge-premio">Reservado de Grande Campeão</span>
+                    <h3>Sabiá Imperador 0145</h3>
+                    <p>Borrego de pista com avaliação genética superior, profundidade de costela e cobertura muscular.</p>
+                    
+                    <div class="genealogia-box">
+                        <strong>Árvore Genealógica</strong>
+                        <div class="genealogia-linha">
+                            <span>Pai:</span>
+                            <span><b>Sabiá Titã 0054</b></span>
+                        </div>
+                        <div class="genealogia-linha">
+                            <span>Mãe:</span>
+                            <span><b>Sabiá Rainha 0012</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animal 3 -->
+            <div class="card-animal">
+                <img src="img/premiado.fazenda3.jpg" alt="Grande Campeã Fêmea">
+                <div class="card-body">
+                    <span class="badge-premio">Grande Campeã Fêmea</span>
+                    <h3>Sabiá Joia Rara 0118</h3>
+                    <p>Matriz doadora de embriões, habilidade materna comprovada e padrão racial impecável.</p>
+                    
+                    <div class="genealogia-box">
+                        <strong>Árvore Genealógica</strong>
+                        <div class="genealogia-linha">
+                            <span>Pai:</span>
+                            <span><b>NZ Importado Gold 402</b></span>
+                        </div>
+                        <div class="genealogia-linha">
+                            <span>Mãe:</span>
+                            <span><b>Sabiá Estrela 0033</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="js/componentes.fazenda.js"></script>
+</body>
+</html>
