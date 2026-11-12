@@ -1,0 +1,212 @@
+/* Paleta de Cores extraída da marca */
+:root {
+    --azul-escuro: #0a1e3f;
+    --azul-medio: #132b53;
+    --dourado: #d4af37;
+    --dourado-hover: #b89528;
+    --texto-escuro: #2b2b2b;
+    --fundo-claro: #f8f9fa;
+    --branco: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--fundo-claro);
+    color: var(--texto-escuro);
+}
+
+/* NAVEGAÇÃO */
+.navbar-fazenda {
+    background-color: var(--azul-escuro);
+    border-bottom: 2px solid var(--dourado);
+    padding: 1rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-img {
+    height: 60px;
+    border-radius: 50%;
+    border: 1px solid var(--dourado);
+}
+
+.brand-title {
+    color: var(--branco);
+    font-size: 1.4rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.brand-title span {
+    color: var(--dourado);
+    display: block;
+    font-size: 0.8rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: var(--branco);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: var(--dourado);
+}
+
+/* HERO SECTION */
+.hero-fazenda {
+    background: linear-gradient(rgba(10, 30, 63, 0.85), rgba(10, 30, 63, 0.85)), url('../img/venda.fazenda.jpg') center/cover no-repeat;
+    color: var(--branco);
+    padding: 100px 5% 80px;
+    text-align: center;
+}
+
+.hero-fazenda h1 {
+    font-size: 2.8rem;
+    color: var(--dourado);
+    margin-bottom: 15px;
+}
+
+.hero-fazenda p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    line-height: 1.6;
+}
+
+.btn-dourado {
+    background-color: var(--dourado);
+    color: var(--azul-escuro);
+    padding: 12px 28px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.3s;
+    display: inline-block;
+}
+
+.btn-dourado:hover {
+    background-color: var(--dourado-hover);
+}
+
+/* SEÇÃO SOBRE & VETERINÁRIA */
+.sobre-fazenda {
+    padding: 70px 5%;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.sobre-img {
+    width: 45%;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border: 2px solid var(--dourado);
+}
+
+.sobre-texto {
+    width: 55%;
+}
+
+.sobre-texto h2 {
+    color: var(--azul-escuro);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--dourado);
+    padding-left: 15px;
+}
+
+.sobre-texto p {
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+/* SEÇÃO DESTAQUES / PREMIADOS */
+.destaques-fazenda {
+    background-color: #eee;
+    padding: 70px 5%;
+    text-align: center;
+}
+
+.section-title {
+    color: var(--azul-escuro);
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.grid-animais {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card-animal {
+    background: var(--branco);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-bottom: 3px solid var(--dourado);
+}
+
+.card-animal img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 20px;
+    text-align: left;
+}
+
+.card-body h3 {
+    color: var(--azul-escuro);
+    margin-bottom: 5px;
+}
+
+.badge-premio {
+    background-color: var(--dourado);
+    color: var(--azul-escuro);
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    font-weight: bold;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+/* RODAPÉ */
+footer {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+    text-align: center;
+    padding: 25px 5%;
+    border-top: 1px solid var(--dourado);
+}

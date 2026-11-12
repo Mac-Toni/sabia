@@ -1,0 +1,3 @@
+node_modules/
+.fazenda.env
+.DS_Store
