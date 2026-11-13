@@ -6,116 +6,120 @@
     <title>Animais à Venda - Fazenda Sabiá</title>
     <link rel="stylesheet" href="css/estilo.fazenda.css">
     <style>
-        /* Estilos da Vitrine de Vendas */
+        .cabecalho-pagina {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            padding: 40px 5%;
+            text-align: center;
+            border-bottom: 3px solid var(--dourado);
+        }
+        .cabecalho-pagina h1 {
+            color: var(--dourado);
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+        }
+        .container-plantel {
+            padding: 50px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* Ajustes específicos para o card da vitrine de vendas */
         .card-animal {
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         .card-animal:hover {
-            transform: translateY(-4px);
+            transform: translateY(-5px);
             box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
-        .card-img-principal {
-            width: 100%;
-            height: 260px;
-            object-fit: cover;
-            object-position: center 20%;
-            display: block;
-            background-color: var(--azul-escuro);
-        }
-        .filiacao-info {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 8px;
-            border-top: 1px solid #eee;
-            padding-top: 8px;
-        }
-        .aviso-vitrine {
-            text-align: center;
-            margin-bottom: 40px;
+        .card-body p {
+            margin: 6px 0;
+            font-size: 0.95rem;
             color: var(--texto-escuro);
+        }
+        .preco-venda {
+            font-size: 1.15rem;
+            color: var(--azul-escuro);
+            font-weight: bold;
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px dashed #ddd;
+        }
+        .sem-registros {
+            text-align: center;
+            padding: 40px;
+            background: var(--branco);
+            border-radius: 8px;
+            color: var(--texto-escuro);
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
     </style>
 </head>
 <body>
 
-    <!-- O cabeçalho será injetado via componentes.fazenda.js -->
-    <div id="header-container"></div>
+    <!-- Cabeçalho da Página -->
+    <header class="cabecalho-pagina">
+        <h1>Plantel Comercial</h1>
+        <p>Genética de ponta em ovinos da raça Poll Dorset diretamente para o seu rebanho.</p>
+    </header>
 
-    <main class="destaques-fazenda">
-        <h1 class="section-title">Vitrine de Comercialização</h1>
-        <p class="aviso-vitrine">Confira nossos lotes disponíveis. Clique no animal para ver a galeria de fotos, vídeo de apresentação e detalhes completos.</p>
-
-        <!-- Grid dinâmico onde os animais vindos do banco serão injetados via JavaScript -->
-        <div class="grid-animais" id="grid-vendas">
-            <!-- Card de Exemplo Estático (Será substituído pelo carregamento da API) -->
-            <div class="card-animal" onclick="window.location.href='detalhe.fazenda.html?id=1'">
-                <img src="img/1.png" alt="Sabiá Champion 01" class="card-img-principal">
-                <div class="card-body">
-                    <span class="badge-premio">Reprodutor (SO)</span>
-                    <h3>Sabiá Champion 01</h3>
-                    <p style="font-size: 0.9rem; color: #555; margin-bottom: 5px;">Tatuagem: <b>SB-104</b></p>
-                    <div class="filiacao-info">
-                        <strong>Pai:</strong> Sabiá Apollo<br>
-                        <strong>Mãe:</strong> Sabiá Diana
-                    </div>
-                </div>
-            </div>
+    <!-- Conteúdo Principal / Vitrine -->
+    <main class="container-plantel">
+        <div class="grid-animais" id="lista-animais">
+            <!-- Os cards dos animais serão injetados dinamicamente via JavaScript -->
         </div>
     </main>
 
-    <!-- O rodapé será injetado via componentes.fazenda.js -->
-    <div id="footer-container"></div>
-
-    <!-- Scripts do Sistema -->
+    <!-- Script que injeta automaticamente o cabeçalho unificado e o rodapé -->
     <script src="js/componentes.fazenda.js"></script>
+
     <script>
-        // Função para carregar os animais cadastrados na vitrine de vendas via API
-        async function carregarVitrineVendas() {
+        async function carregarAnimaisVenda() {
             try {
-                const response = await fetch('/api/animais'); // Rota que busca todos os animais
-                const animais = await response.json();
+                const resposta = await fetch('/api/animais/venda');
+                const animais = await resposta.json();
                 
-                const gridVendas = document.getElementById('grid-vendas');
-                if (!gridVendas) return;
+                const container = document.getElementById('lista-animais');
+                container.innerHTML = '';
 
                 if (animais.length === 0) {
-                    gridVendas.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Nenhum animal disponível no momento.</p>';
+                    container.innerHTML = '<div class="sem-registros">Nenhum animal à venda no momento. Volte em breve ou entre em contato!</div>';
                     return;
                 }
 
-                gridVendas.innerHTML = ''; // Limpa o exemplo estático
-
                 animais.forEach(animal => {
+                    const fotoCapa = animal.foto_1 ? `/uploads/${animal.foto_1}` : 'img/sem-foto.jpg';
+                    const precoFormatado = animal.preco ? `R$ ${Number(animal.preco).toLocaleString('pt-BR', {minimumFractionDigits: 2})}` : 'Preço a negociar';
+
                     const card = document.createElement('div');
                     card.className = 'card-animal';
-                    // Ao clicar no card, redireciona para a página única de detalhes passando o ID
                     card.onclick = () => {
                         window.location.href = `detalhe.fazenda.html?id=${animal.id}`;
                     };
 
                     card.innerHTML = `
-                        <img src="${animal.foto_1 || 'img/1.png'}" alt="${animal.nome}" class="card-img-principal">
+                        <img src="${fotoCapa}" alt="${animal.nome}">
                         <div class="card-body">
-                            <span class="badge-premio">${animal.categoria || 'Reprodutor / Matriz'}</span>
+                            <span class="badge-premio">Disponível</span>
                             <h3>${animal.nome}</h3>
-                            <p style="font-size: 0.9rem; color: #555; margin-bottom: 5px;">Tatuagem: <b>${animal.tatuagem || '---'}</b></p>
-                            <div class="filiacao-info">
-                                <strong>Pai:</strong> ${animal.pai || 'Não informado'}<br>
-                                <strong>Mãe:</strong> ${animal.mae || 'Não informado'}
-                            </div>
+                            <p><strong>Tatuagem:</strong> ${animal.tatuagem}</p>
+                            <p><strong>Pai:</strong> ${animal.pai || 'Não informado'}</p>
+                            <p><strong>Mãe:</strong> ${animal.mae || 'Não informada'}</p>
+                            <div class="preco-venda">${precoFormatado}</div>
                         </div>
                     `;
-                    gridVendas.appendChild(card);
+
+                    container.appendChild(card);
                 });
-            } catch (erro) {
-                console.error('Erro ao carregar a vitrine de vendas:', erro);
+            } catch (error) {
+                console.error('Erro ao carregar animais à venda:', error);
+                document.getElementById('lista-animais').innerHTML = '<div class="sem-registros">Erro ao carregar os dados. Verifique a conexão com o servidor.</div>';
             }
         }
 
-        // Executa o carregamento ao abrir a página
-        document.addEventListener('DOMContentLoaded', carregarVitrineVendas);
+        carregarAnimaisVenda();
     </script>
 </body>
 </html>
-[cite: 3]

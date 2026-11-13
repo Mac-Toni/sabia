@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir arquivos estáticos da pasta public (incluindo imagens e vídeos)
+// Servir arquivos estáticos da pasta public (incluindo imagens, vídeos e arquivos html)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Rota raiz redirecionando para a landing page com sufixo .fazenda
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 // ROTAS DA API - GESTÃO DE ANIMAIS (FAZENDA SABIÁ)
 // ==========================================
 
-// 1. Rota para listar todos os animais (usada na vitrine de vendas e plantéis)
+// 1. Rota para listar todos os animais (plantel geral)
 app.get('/api/animais', async (req, res) => {
     try {
         const [rows] = await db.query('SELECT * FROM animais ORDER BY id DESC');
@@ -34,7 +34,18 @@ app.get('/api/animais', async (req, res) => {
     }
 });
 
-// 2. Rota para buscar os detalhes de um animal específico por ID (usada em detalhe.fazenda.html)
+// 2. Rota para listar apenas os animais à venda (usada em animais.venda.fazenda.html)
+app.get('/api/animais/venda', async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM animais WHERE status_venda = TRUE ORDER BY id DESC');
+        res.json(rows);
+    } catch (erro) {
+        console.error('Erro ao buscar animais à venda:', erro);
+        res.status(500).json({ erro: 'Erro interno ao carregar os animais à venda.' });
+    }
+});
+
+// 3. Rota para buscar os detalhes de um animal específico por ID (usada em detalhe.fazenda.html)
 app.get('/api/animais/:id', async (req, res) => {
     const { id } = req.params;
     try {
