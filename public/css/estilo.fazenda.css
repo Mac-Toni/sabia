@@ -147,7 +147,7 @@ body {
     margin-bottom: 15px;
 }
 
-/* SEÇÃO DESTAQUES / PREMIADOS */
+/* SEÇÃO DESTAQUES / PREMIADOS / VITRINE */
 .destaques-fazenda {
     background-color: #eee;
     padding: 70px 5%;
@@ -176,11 +176,12 @@ body {
     border-bottom: 3px solid var(--dourado);
 }
 
+/* Tamanho exato e uniforme da foto principal/capa no card */
 .card-animal img {
     width: 100%;
     height: 260px;
     object-fit: cover;
-    object-position: center 20%;
+    object-position: center;
     background-color: var(--azul-escuro);
     display: block;
 }

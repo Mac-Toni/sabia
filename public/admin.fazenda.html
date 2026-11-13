@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Gestão - Fazenda Sabiá</title>
+    <link rel="stylesheet" href="css/estilo.fazenda.css">
+    <style>
+        .admin-header {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 25px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--dourado);
+        }
+        .admin-header h1 {
+            color: var(--dourado);
+            font-size: 1.6rem;
+            margin: 0;
+        }
+        .btn-sair {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            border: 1px solid var(--dourado);
+            padding: 10px 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .btn-sair:hover {
+            background-color: var(--dourado);
+            color: var(--azul-escuro);
+        }
+        .admin-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 5%;
+        }
+        .card-painel {
+            background: var(--branco);
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+            border-top: 3px solid var(--azul-escuro);
+        }
+        .card-painel h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            border-left: 4px solid var(--dourado);
+            padding-left: 10px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+        }
+        .form-control {
+            margin-bottom: 12px;
+        }
+        .form-control label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--azul-escuro);
+        }
+        .form-control input, .form-control select, .form-control textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+        }
+        .form-control input[type="file"] {
+            padding: 7px;
+            background: #f8f9fa;
+        }
+        .grupo-preco {
+            display: flex;
+            gap: 8px;
+        }
+        .grupo-preco select {
+            flex: 1.2;
+        }
+        .grupo-preco input {
+            flex: 1;
+        }
+        .secao-fotos {
+            grid-column: 1 / -1;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            margin-top: 5px;
+        }
+        .secao-fotos h4 {
+            color: var(--azul-escuro);
+            margin: 0 0 12px 0;
+            font-size: 1rem;
+        }
+        .grid-fotos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .form-control-full {
+            grid-column: 1 / -1;
+        }
+        .form-control-full textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            height: 90px;
+            box-sizing: border-box;
+        }
+        .btn-salvar {
+            background-color: var(--dourado);
+            color: var(--azul-escuro);
+            font-weight: bold;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+        .btn-salvar:hover {
+            background-color: var(--dourado-hover);
+        }
+        .btn-cancelar {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: var(--branco);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            font-size: 0.95rem;
+        }
+        th {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+        }
+        .acoes-btns button {
+            padding: 7px 14px;
+            margin-right: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.85rem;
+        }
+        .btn-editar {
+            background-color: var(--dourado);
+            color: var(--azul-escuro);
+            border: 1px solid var(--dourado);
+        }
+        .btn-excluir {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            border: 1px solid var(--azul-escuro);
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        if (localStorage.getItem('fazenda_admin_auth') !== 'true') {
+            window.location.href = 'login.fazenda.html';
+        }
+    </script>
+
+    <header class="admin-header">
+        <h1>Painel de Gestão - Fazenda Sabiá</h1>
+        <button class="btn-sair" onclick="sairAdmin()">Sair do Sistema</button>
+    </header>
+
+    <div class="admin-container">
+        
+        <div class="card-painel">
+            <h3 id="titulo-form">Cadastrar Novo Animal Poll Dorset</h3>
+            <!-- Uso de FormData para envio de arquivos via upload -->
+            <form id="form-animal">
+                <input type="hidden" id="animal-id">
+                <div class="form-grid">
+                    <div class="form-control">
+                        <label>Nome do Animal</label>
+                        <input type="text" id="nome" required placeholder="Ex: Sabiá Pioneiro 0201">
+                    </div>
+                    <div class="form-control">
+                        <label>Tatuagem</label>
+                        <input type="text" id="tatuagem" required placeholder="Ex: SBIA201">
+                    </div>
+                    <div class="form-control">
+                        <label>Categoria</label>
+                        <select id="categoria">
+                            <option value="Reprodutor">Reprodutor</option>
+                            <option value="Matriz">Matriz</option>
+                            <option value="Borrego de Pista">Borrego de Pista</option>
+                            <option value="Embrião">Embrião</option>
+                        </select>
+                    </div>
+                    <div class="form-control">
+                        <label>Condição / Preço (R$)</label>
+                        <div class="grupo-preco">
+                            <select id="tipo_preco" onchange="alternarCampoPreco()">
+                                <option value="negociar">Preço a Negociar</option>
+                                <option value="fixo">Preço Fixo (R$)</option>
+                            </select>
+                            <input type="number" step="0.01" min="0.01" id="preco" placeholder="Ex: 15000.00" disabled>
+                        </div>
+                    </div>
+                    <div class="form-control">
+                        <label>Data de Nascimento</label>
+                        <input type="date" id="nascimento">
+                    </div>
+                    <div class="form-control">
+                        <label>Pai</label>
+                        <input type="text" id="pai" placeholder="Ex: NZ Gold 402">
+                    </div>
+                    <div class="form-control">
+                        <label>Mãe</label>
+                        <input type="text" id="mae" placeholder="Ex: Sabiá Suprema 0089">
+                    </div>
+                    <div class="form-control">
+                        <label>Premiação / Destaque</label>
+                        <input type="text" id="premio" placeholder="Ex: Campeão Borrego Expodireto">
+                    </div>
+                    <div class="form-control">
+                        <label>Status à Venda</label>
+                        <select id="status_venda">
+                            <option value="1">Disponível à Venda</option>
+                            <option value="0">Vendido / Indisponível</option>
+                        </select>
+                    </div>
+                    <div class="form-control">
+                        <label>Vídeo do Animal (Arquivo MP4/MOV)</label>
+                        <input type="file" id="video_arquivo" accept="video/*">
+                    </div>
+
+                    <!-- Seção das 5 Fotos com Upload do Dispositivo -->
+                    <div class="secao-fotos">
+                        <h4>Carrossel de Fotos (Selecione até 5 imagens do dispositivo)</h4>
+                        <div class="grid-fotos">
+                            <div class="form-control">
+                                <label>Foto 1 (Principal / Capa)</label>
+                                <input type="file" id="foto_1" accept="image/*">
+                            </div>
+                            <div class="form-control">
+                                <label>Foto 2</label>
+                                <input type="file" id="foto_2" accept="image/*">
+                            </div>
+                            <div class="form-control">
+                                <label>Foto 3</label>
+                                <input type="file" id="foto_3" accept="image/*">
+                            </div>
+                            <div class="form-control">
+                                <label>Foto 4</label>
+                                <input type="file" id="foto_4" accept="image/*">
+                            </div>
+                            <div class="form-control">
+                                <label>Foto 5</label>
+                                <input type="file" id="foto_5" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-control-full">
+                        <label style="display:block; margin-bottom:5px; font-weight:600; font-size:0.9rem; color:var(--azul-escuro);">Descrição e Genealogia Complementar</label>
+                        <textarea id="descricao" placeholder="Informações adicionais detalhadas do animal..."></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn-salvar">Salvar Animal no Sistema</button>
+                <button type="button" id="btn-cancelar" class="btn-cancelar" onclick="limparFormulario()">Cancelar Edição</button>
+            </form>
+        </div>
+
+        <div class="card-painel">
+            <h3>Animais Cadastrados no Rebanho</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome / Tatuagem</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-animais-corpo">
+                    <tr><td colspan="5" style="text-align: center;">Carregando animais...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        let listaAnimaisCache = [];
+
+        function sairAdmin() {
+            localStorage.removeItem('fazenda_admin_auth');
+            window.location.href = 'login.fazenda.html';
+        }
+
+        function alternarCampoPreco() {
+            const tipo = document.getElementById('tipo_preco').value;
+            const inputPreco = document.getElementById('preco');
+            if (tipo === 'fixo') {
+                inputPreco.disabled = false;
+                inputPreco.required = true;
+                inputPreco.focus();
+            } else {
+                inputPreco.disabled = true;
+                inputPreco.required = false;
+                inputPreco.value = '';
+            }
+        }
+
+        async function carregarTabelaAdmin() {
+            try {
+                const res = await fetch('/api/animais');
+                const animais = await res.json();
+                listaAnimaisCache = animais;
+
+                const tbody = document.getElementById('tabela-animais-corpo');
+                tbody.innerHTML = '';
+
+                if (animais.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Nenhum animal cadastrado.</td></tr>';
+                    return;
+                }
+
+                animais.forEach(a => {
+                    const precoNum = Number(a.preco);
+                    const precoFmt = precoNum > 0 ? `R$ ${precoNum.toLocaleString('pt-BR', {minimumFractionDigits:2})}` : 'Preço a Negociar';
+                    const statusBadge = a.status_venda ? '<span style="color:var(--azul-escuro); background:var(--dourado); padding:3px 8px; border-radius:4px; font-weight:bold; font-size:0.85rem;">À Venda</span>' : '<span style="color:var(--branco); background:var(--azul-medio); padding:3px 8px; border-radius:4px; font-weight:bold; font-size:0.85rem;">Indisponível</span>';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${a.nome}</strong><br><small>Tatuagem: ${a.tatuagem || '-'}</small></td>
+                            <td>${a.categoria}</td>
+                            <td><strong>${precoFmt}</strong></td>
+                            <td>${statusBadge}</td>
+                            <td class="acoes-btns">
+                                <button class="btn-editar" onclick="preencherEdicao(${a.id})">Editar</button>
+                                <button class="btn-excluir" onclick="excluirAnimal(${a.id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error('Erro ao carregar tabela:', err);
+            }
+        }
+
+        function limparFormulario() {
+            document.getElementById('form-animal').reset();
+            document.getElementById('animal-id').value = '';
+            document.getElementById('tipo_preco').value = 'negociar';
+            alternarCampoPreco();
+            document.getElementById('titulo-form').textContent = 'Cadastrar Novo Animal Poll Dorset';
+            document.getElementById('btn-cancelar').style.display = 'none';
+        }
+
+        function preencherEdicao(id) {
+            const animal = listaAnimaisCache.find(item => item.id === id);
+            if (!animal) return;
+
+            document.getElementById('animal-id').value = animal.id;
+            document.getElementById('nome').value = animal.nome || '';
+            document.getElementById('tatuagem').value = animal.tatuagem || '';
+            document.getElementById('categoria').value = animal.categoria || 'Reprodutor';
+
+            const precoNum = Number(animal.preco);
+            if (precoNum > 0) {
+                document.getElementById('tipo_preco').value = 'fixo';
+                alternarCampoPreco();
+                document.getElementById('preco').value = precoNum;
+            } else {
+                document.getElementById('tipo_preco').value = 'negociar';
+                alternarCampoPreco();
+            }
+
+            document.getElementById('nascimento').value = animal.nascimento ? animal.nascimento.split('T')[0] : '';
+            document.getElementById('pai').value = animal.pai || '';
+            document.getElementById('mae').value = animal.mae || '';
+            document.getElementById('premio').value = animal.premio || '';
+            document.getElementById('status_venda').value = animal.status_venda ? '1' : '0';
+
+            document.getElementById('titulo-form').textContent = 'Editando Animal: ' + animal.nome;
+            document.getElementById('btn-cancelar').style.display = 'inline-block';
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        document.getElementById('form-animal').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('animal-id').value;
+            const tipoPreco = document.getElementById('tipo_preco').value;
+            const valorPreco = tipoPreco === 'fixo' ? parseFloat(document.getElementById('preco').value) : 0;
+
+            if (tipoPreco === 'fixo' && (!valorPreco || valorPreco <= 0)) {
+                alert('Informe um preço fixo válido.');
+                return;
+            }
+
+            // Monta o FormData para suportar arquivos binários (fotos e vídeos)
+            const formData = new FormData();
+            formData.append('nome', document.getElementById('nome').value.trim());
+            formData.append('tatuagem', document.getElementById('tatuagem').value.trim());
+            formData.append('categoria', document.getElementById('categoria').value);
+            formData.append('preco', valorPreco);
+            formData.append('nascimento', document.getElementById('nascimento').value);
+            formData.append('pai', document.getElementById('pai').value.trim());
+            formData.append('mae', document.getElementById('mae').value.trim());
+            formData.append('premio', document.getElementById('premio').value.trim());
+            formData.append('status_venda', document.getElementById('status_venda').value);
+            formData.append('descricao', document.getElementById('descricao').value.trim());
+
+            // Anexa os arquivos selecionados se houver
+            if (document.getElementById('foto_1').files[0]) formData.append('foto_1', document.getElementById('foto_1').files[0]);
+            if (document.getElementById('foto_2').files[0]) formData.append('foto_2', document.getElementById('foto_2').files[0]);
+            if (document.getElementById('foto_3').files[0]) formData.append('foto_3', document.getElementById('foto_3').files[0]);
+            if (document.getElementById('foto_4').files[0]) formData.append('foto_4', document.getElementById('foto_4').files[0]);
+            if (document.getElementById('foto_5').files[0]) formData.append('foto_5', document.getElementById('foto_5').files[0]);
+            if (document.getElementById('video_arquivo').files[0]) formData.append('video_arquivo', document.getElementById('video_arquivo').files[0]);
+
+            const url = id ? `/api/animais/${id}` : '/api/animais';
+            const metodo = id ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method: metodo,
+                    body: formData // Importante: não definir Content-Type manualmente ao usar FormData
+                });
+
+                if (res.ok) {
+                    alert('Animal e arquivos salvos com sucesso!');
+                    limparFormulario();
+                    carregarTabelaAdmin();
+                } else {
+                    alert('Erro ao salvar animal.');
+                }
+            } catch (err) {
+                console.error('Erro:', err);
+                alert('Erro de conexão ao enviar arquivos.');
+            }
+        });
+
+        async function excluirAnimal(id) {
+            if (!confirm('Tem certeza que deseja excluir este animal?')) return;
+            try {
+                const res = await fetch(`/api/animais/${id}`, { method: 'DELETE' });
+                if (res.ok) {
+                    alert('Animal excluído com sucesso!');
+                    carregarTabelaAdmin();
+                }
+            } catch (err) {
+                console.error('Erro:', err);
+            }
+        }
+
+        carregarTabelaAdmin();
+    </script>
+</body>
+</html>
